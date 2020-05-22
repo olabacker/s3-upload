@@ -11,7 +11,7 @@ namespace AwsUtils
 {
     public class S3Client
     {
-        private static IAmazonS3 s3Client;
+        private IAmazonS3 s3Client;
 
         public S3Client(string accessKey, string secretKey, RegionEndpoint regionEndpoint)
         {
@@ -20,7 +20,7 @@ namespace AwsUtils
             s3Client = new AmazonS3Client(awsCredentials, regionEndpoint);
         }
 
-        public static async Task UploadFileAsync(string filePath, string bucketName, string keyName)
+        public async Task UploadFileAsync(string filePath, string bucketName, string keyName)
         {
             try
             {
