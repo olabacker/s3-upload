@@ -11,7 +11,7 @@ namespace AwsUtils
 {
     public class S3Client
     {
-        private IAmazonS3 s3Client;
+        private readonly IAmazonS3 s3Client;
 
         public S3Client(string accessKey, string secretKey, RegionEndpoint regionEndpoint)
         {
@@ -30,11 +30,30 @@ namespace AwsUtils
             }
             catch (AmazonS3Exception e)
             {
-                Console.WriteLine("Error encountered on server. Message:'{0}' when writing an object", e.Message);
+                Console.WriteLine($"Error encountered on server. Message:'{e.Message}' when writing an object");
             }
             catch (Exception e)
             {
-                Console.WriteLine("Unknown encountered on server. Message:'{0}' when writing an object", e.Message);
+                Console.WriteLine($"Unknown encountered on server. Message:'{e.Message}' when writing an object");
+            }
+
+        }
+
+        public async Task DownloadFileAsync(string filePath, string bucketName, string keyName)
+        {
+            try
+            {
+                var fileTransferUtility = new TransferUtility(s3Client);
+
+                await fileTransferUtility.DownloadAsync(filePath, bucketName, keyName);
+            }
+            catch (AmazonS3Exception e)
+            {
+                Console.WriteLine($"Error encountered on server. Message:'{e.Message}' when reading an object");
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"Unknown encountered on server. Message:'{e.Message}' when reading an object");
             }
 
         }
