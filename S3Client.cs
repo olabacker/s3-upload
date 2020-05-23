@@ -20,11 +20,23 @@ namespace AwsUtils
             s3Client = new AmazonS3Client(awsCredentials, regionEndpoint);
         }
 
-        public async Task UploadFileAsync(string filePath, string bucketName, string keyName)
+        public async Task UploadFileAsync(string filePath, string bucketName, string keyName, string contentType = null)
         {
             try
             {
                 var fileTransferUtility = new TransferUtility(s3Client);
+
+                var req = new TransferUtilityUploadRequest()
+                {
+                    FilePath = filePath,
+                    BucketName = bucketName,
+                    Key = keyName,
+                };
+
+                if(contentType != null)
+                {
+                    req.Metadata.Add("Content-Type", contentType);
+                }
 
                 await fileTransferUtility.UploadAsync(filePath, bucketName, keyName);
             }
