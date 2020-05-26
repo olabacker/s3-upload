@@ -31,11 +31,12 @@ namespace AwsUtils
                     FilePath = filePath,
                     BucketName = bucketName,
                     Key = keyName,
+                    
                 };
-
+    
                 if(contentType != null)
                 {
-                    req.Metadata.Add("Content-Type", contentType);
+                    req.ContentType = contentType;
                 }
 
                 await fileTransferUtility.UploadAsync(filePath, bucketName, keyName);
